@@ -1,0 +1,15 @@
+# MAXIMUS SOVEREIGN COMMAND — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Telegram bot framework
+python-telegram-bot==21.6
+
+# HTTP client for Ollama LLM API
+httpx==0.27.2
+
+# Data logging / Excel export
+pandas==2.2.3
+openpyxl==3.1.5
+
+# Environment variable loading
+python-dotenv==1.0.1
