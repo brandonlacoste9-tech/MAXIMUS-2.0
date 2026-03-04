@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # 🦞 NullClaw: The High-Performance Executor
+  nullclaw:
+    image: ghcr.io/nullclaw/nullclaw:latest
+    container_name: imperial-nullclaw-runtime
+    volumes:
+      - ./.nullclaw:/root/.nullclaw
+      - ./.env:/root/.env
+    restart: always
+    environment:
+      - NULLCLAW_GATEWAY_PORT=3000
+
+  # ⚙️ NullBoiler: The Imperial Orchestrator (DAG Engine)
+  nullboiler:
+    image: ghcr.io/nullclaw/nullboiler:latest
+    container_name: imperial-nullboiler-general
+    depends_on:
+      - nullclaw
+      - db
+    volumes:
+      - ./nullboiler_data:/app/data
+    restart: always
+    ports:
+      - "8081:8081" # Control UI for Workflows
+
+  # 🎫 NullTickets: The Task Control Plane (NullTracker)
+  nulltickets:
+    image: ghcr.io/nullclaw/nulltickets:latest
+    container_name: imperial-nulltickets-auditor
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - "8082:8082" # Control UI for Task Tracking
+
+  # 🧠 Ollama: Local LLM Worker (For specific small tasks)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: imperial-ollama-server
+    volumes:
+      - ./ollama_data:/root/.ollama
+    restart: always
+
+  # 🗄️ Database: Sovereign Persistence (Postgres)
+  db:
+    image: postgres:15-alpine
+    container_name: imperial-postgres-vault
+    environment:
+      - POSTGRES_USER=maximus
+      - POSTGRES_PASSWORD=maximus_sovereign_pass
+      - POSTGRES_DB=imperial_stack
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  nullboiler_data:
+  ollama_data:
+  postgres_data:
