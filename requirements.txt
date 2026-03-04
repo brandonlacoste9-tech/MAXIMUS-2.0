@@ -1,0 +1,8 @@
+# MAXIMUS SOVEREIGN COMMAND — Python Dependencies
+# Pin versions for reproducible, production-grade installs.
+
+python-telegram-bot==21.9
+python-dotenv==1.0.1
+requests==2.32.3
+openpyxl==3.1.5
+pytest==8.3.5
